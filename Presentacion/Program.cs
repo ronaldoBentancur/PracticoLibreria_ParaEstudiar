@@ -1,0 +1,45 @@
+using CasosUso.InterfacesCU;
+using LogicaAccesoDatos.Repositorios;
+using LogicaAplicacion.CasosUso;
+using LogicaNegocio.InterfacesRepositorios;
+
+
+namespace Presentacion
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IRepositorioTemas, RepositorioTemasMemoria>();
+            builder.Services.AddScoped<IAltaTema, CUAltaTema>();
+            builder.Services.AddScoped<IBajaTema, CUBajaTema>();
+            builder.Services.AddScoped<IModificarTema, CUModificarTema>();
+            builder.Services.AddScoped<IListadoTemas, CUListadoTemas>();
+            builder.Services.AddScoped<IBuscarTemaId, CUBuscarTemaId>();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.MapStaticAssets();
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Temas}/{action=Index}/{id?}")
+                .WithStaticAssets();
+
+            app.Run();
+        }
+    }
+}
