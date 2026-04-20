@@ -3,10 +3,12 @@ using LogicaNegocio.InterfacesDominio;
 using LogicaNegocio.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace LogicaNegocio.ClasesDominio
 {
+    [Table("Subjects")]
     public class Tema : IValidable
     {
         public int Id { get; set; }

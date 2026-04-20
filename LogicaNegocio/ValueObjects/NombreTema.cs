@@ -1,12 +1,13 @@
 ﻿using Excepciones;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LogicaNegocio.ValueObjects
 {
-    
+    [ComplexType]
     public class NombreTema : IEquatable<NombreTema>
     {
         // NO TIENE ID

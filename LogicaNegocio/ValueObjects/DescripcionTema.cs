@@ -1,13 +1,14 @@
 ﻿using Excepciones;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace LogicaNegocio.ValueObjects
 {
+    [ComplexType]
     public class DescripcionTema : IEquatable<DescripcionTema>
     {
-
         public string Valor { get; private set; }
 
         public DescripcionTema(string valor)

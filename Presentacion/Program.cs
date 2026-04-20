@@ -1,4 +1,5 @@
 using CasosUso.InterfacesCU;
+using LogicaAccesoDatos.EF;
 using LogicaAccesoDatos.Repositorios;
 using LogicaAplicacion.CasosUso;
 using LogicaNegocio.InterfacesRepositorios;
@@ -15,7 +16,7 @@ namespace Presentacion
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddScoped<IRepositorioTemas, RepositorioTemasMemoria>();
+            builder.Services.AddScoped<IRepositorioTemas, RepositorioTemasBD>();
             builder.Services.AddScoped<IRepositorioUsuarios, RepositorioUsuarios>();
 
             builder.Services.AddScoped<IAltaTema, CUAltaTema>();
@@ -25,6 +26,8 @@ namespace Presentacion
             builder.Services.AddScoped<IBuscarTemaId, CUBuscarTemaId>();
             builder.Services.AddScoped<ILogin, CULogin>();
             builder.Services.AddScoped<IListadoUsuarios, CUListadoUsuarios>();
+
+            builder.Services.AddDbContext<LibreriaContext>();
 
             builder.Services.AddSession();
 

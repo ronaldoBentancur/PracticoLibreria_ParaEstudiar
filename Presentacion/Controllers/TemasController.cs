@@ -46,11 +46,11 @@ namespace Presentacion.Controllers
         // GET: TemasController/Create
         public ActionResult Create() // SÓLO ADMINISTRADORES
         {
-            string rol = HttpContext.Session.GetString("rol");
-            if (string.IsNullOrEmpty(rol) || rol != "administrador")
-            {
-                return RedirectToAction("Login", "Usuarios");
-            }
+            //string rol = HttpContext.Session.GetString("rol");
+            //if (string.IsNullOrEmpty(rol) || rol != "administrador")
+            //{
+            //    return RedirectToAction("Login", "Usuarios");
+            //}
             return View();
         }
 
@@ -80,11 +80,11 @@ namespace Presentacion.Controllers
         // GET: TemasController/Edit/5
         public ActionResult Edit(int id) // ADMINISTRADORES O GERENTES
         {
-            string rol = HttpContext.Session.GetString("rol");
-            if (string.IsNullOrEmpty(rol))
-            {
-                return RedirectToAction("Login", "Usuarios");
-            }
+            //string rol = HttpContext.Session.GetString("rol");
+            //if (string.IsNullOrEmpty(rol))
+            //{
+            //    return RedirectToAction("Login", "Usuarios");
+            //}
             TemaDTO tema = CUBuscarId.Buscar(id);
             if (tema == null) ViewBag.Error = "El tema con id " + id + " no existe";            
             return View(tema);
@@ -116,11 +116,11 @@ namespace Presentacion.Controllers
         // GET: TemasController/Delete/5
         public ActionResult Delete(int id) // SÓLO ADMINISTRADORES
         {
-            string rol = HttpContext.Session.GetString("rol");
-            if (string.IsNullOrEmpty(rol) || rol != "administrador")
-            {
-                return RedirectToAction("Login", "Usuarios");
-            }
+            //string rol = HttpContext.Session.GetString("rol");
+            //if (string.IsNullOrEmpty(rol) || rol != "administrador")
+            //{
+            //    return RedirectToAction("Login", "Usuarios");
+            //}
             TemaDTO aBorrar = CUBuscarId.Buscar(id);
             if (aBorrar == null) ViewBag.Error = "El tema con id " + id + " no existe";
             return View(aBorrar);

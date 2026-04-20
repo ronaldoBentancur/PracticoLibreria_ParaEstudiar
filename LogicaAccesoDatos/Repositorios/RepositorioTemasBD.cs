@@ -1,4 +1,6 @@
-﻿using LogicaNegocio.ClasesDominio;
+﻿using Excepciones;
+using LogicaAccesoDatos.EF;
+using LogicaNegocio.ClasesDominio;
 using LogicaNegocio.InterfacesRepositorios;
 using System;
 using System.Collections.Generic;
@@ -8,34 +10,60 @@ namespace LogicaAccesoDatos.Repositorios
 {
     public class RepositorioTemasBD : IRepositorioTemas
     {
+        public LibreriaContext Contexto { get; set; }
+
+        public RepositorioTemasBD(LibreriaContext ctx)
+        {
+            Contexto = ctx;
+        }
+
         public void Add(Tema nuevo)
         {
-            throw new NotImplementedException();
+            if (nuevo == null) throw new DatosInvalidosException("No se proveen datos para el alta del tema");
+
+            nuevo.Validar();
+
+            Contexto.Temas.Add(nuevo);
+            Contexto.SaveChanges();
         }
 
         public IEnumerable<Tema> FindAll()
         {
-            throw new NotImplementedException();
+            return Contexto.Temas.ToList();
         }
 
         public Tema FindById(int id)
         {
-            throw new NotImplementedException();
+            return Contexto.Temas.Find(id);
         }
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            Tema aBorrar = FindById(id);
+
+            if (aBorrar == null) throw new OperacionInvalidaException("No existe el tema con id " + id);
+
+            Contexto.Temas.Remove(aBorrar);
+            Contexto.SaveChanges();
         }
 
         public IEnumerable<Tema> TemasContienenTexto(string texto)
         {
+            // PENDIENTE RESOLVER CON LINQ
             throw new NotImplementedException();
         }
 
         public void Update(Tema obj)
         {
-            throw new NotImplementedException();
+            if (obj == null) throw new DatosInvalidosException("No se proveen datos para la modificación");
+            obj.Validar();
+            Tema aModificar = FindById(obj.Id);
+            if (aModificar == null) throw new OperacionInvalidaException("No existe el tema a modificar");
+
+            Contexto.Entry(aModificar).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+
+            Contexto.Temas.Update(obj);
+            Contexto.SaveChanges();
         }
     }
 }
