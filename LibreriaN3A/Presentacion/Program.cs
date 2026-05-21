@@ -1,0 +1,60 @@
+using CasosUso.InterfacesCU;
+using LogicaAccesoDatos.EF;
+using LogicaAccesoDatos.Repositorios;
+using LogicaAplicacion.CasosUso;
+using LogicaNegocio.InterfacesRepositorios;
+using Microsoft.EntityFrameworkCore;
+
+
+namespace Presentacion
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IRepositorioTemas, RepositorioTemasBD>();
+            builder.Services.AddScoped<IRepositorioUsuarios, RepositorioUsuariosBD>();
+
+            builder.Services.AddScoped<IAltaTema, CUAltaTema>();
+            builder.Services.AddScoped<IBajaTema, CUBajaTema>();
+            builder.Services.AddScoped<IModificarTema, CUModificarTema>();
+            builder.Services.AddScoped<IListadoTemas, CUListadoTemas>();
+            builder.Services.AddScoped<IBuscarTemaId, CUBuscarTemaId>();
+            builder.Services.AddScoped<ILogin, CULogin>();
+            builder.Services.AddScoped<IListadoUsuarios, CUListadoUsuarios>();
+
+
+            string conBD = builder.Configuration.GetConnectionString("MiConexion");
+            builder.Services.AddDbContext<LibreriaContext>(options => 
+                    options.UseSqlServer(conBD));
+
+            builder.Services.AddSession();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseRouting();
+
+            app.UseSession();
+
+            app.UseAuthorization();
+
+            app.MapStaticAssets();
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Temas}/{action=Index}/{id?}")
+                .WithStaticAssets();
+
+            app.Run();
+        }
+    }
+}
